@@ -1,7 +1,7 @@
 ![](resources/codegeex_logo.png)
 
 <p align="center">
-    🏠 <a href="https://codegeex.cn" target="_blank">主页</a>｜🛠 插件 <a href="https://marketplace.visualstudio.com/items?itemName=aminer.codegeex" target="_blank">VS Code</a>, <a href="https://plugins.jetbrains.com/plugin/20587-codegeex" target="_blank">Jetbrains</a>｜🤗 <a href="https://huggingface.co/THUDM/codegeex2-6b" target="_blank">HF Repo</a>｜📄 <a href="https://arxiv.org/abs/2303.17568" target="_blank">论文</a>｜👋 加入<a href="https://wj.qq.com/s2/11274205/a15b/"target="_blank">微信开发者交流群</a> 
+    🏠 <a href="https://codegeex.cn" target="_blank">主页</a>｜🛠 插件 <a href="https://marketplace.visualstudio.com/items?itemName=aminer.codegeex" target="_blank">VS Code</a>, <a href="https://plugins.jetbrains.com/plugin/20587-codegeex" target="_blank">Jetbrains</a>｜🤗 <a href="https://huggingface.co/THUDM/codegeex2-6b" target="_blank">HF Repo</a>｜📄 <a href="https://arxiv.org/abs/2303.17568" target="_blank">论文</a>｜👋 加入<a href="resources/wechat.md"target="_blank">微信开发者交流群</a> 
 </p>
 
 Read this in [English](README_EN.md)
