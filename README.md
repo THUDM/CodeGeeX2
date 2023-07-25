@@ -13,7 +13,7 @@ CodeGeeX2 是多语言代码生成模型 [CodeGeeX](https://github.com/THUDM/Cod
 * **更强大的代码能力**：基于 ChatGLM2-6B 基座语言模型，CodeGeeX2-6B 进一步经过了 600B 代码数据预训练，相比一代模型，在代码能力上全面提升，[HumanEval-X](https://huggingface.co/datasets/THUDM/humaneval-x) 评测集的六种编程语言均大幅提升 (Python +57%, C++ +71%, Java +54%, JavaScript +83%, Go +56%, Rust +321\%)，在Python上达到 35.9\% 的 Pass@1 一次通过率，超越规模更大的 StarCoder-15B。
 * **更优秀的模型特性**：继承 ChatGLM2-6B 模型特性，CodeGeeX2-6B 更好支持中英文输入，支持最大 8192 序列长度，推理速度较一代 CodeGeeX-13B 大幅提升，量化后仅需6GB显存即可运行，支持轻量级本地化部署。
 * **更全面的AI编程助手**：CodeGeeX插件（[VS Code](https://marketplace.visualstudio.com/items?itemName=aminer.codegeex), [Jetbrains](https://plugins.jetbrains.com/plugin/20587-codegeex)）后端升级，支持超过100种编程语言，新增上下文补全、跨文件补全等实用功能。结合 Ask CodeGeeX 交互式AI编程助手，支持中英文对话解决各种编程问题，包括且不限于代码解释、代码翻译、代码纠错、文档生成等，帮助程序员更高效开发。
-* **更开放的协议**：CodeGeeX2-6B 权重对学术研究完全开放，填写[问卷](https://open.bigmodel.cn/mla/form)申请商业使用。
+* **更开放的协议**：CodeGeeX2-6B 权重对学术研究完全开放，填写[登记表](https://open.bigmodel.cn/mla/form?mcode=CodeGeeX2-6B)申请商业使用。
 
 
 ## AI编程助手
@@ -126,7 +126,7 @@ CodeGeeX2 与上一代相比，对部署更加友好。得益于使用 Multi-Que
 
 ## 协议
 
-本仓库的代码依照 [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) 协议开源，模型的权重的使用则需要遵循 [Model License](MODEL_LICENSE)。CodeGeeX2-6B 权重对学术研究完全开放，填写[问卷](https://open.bigmodel.cn/mla/form)申请商业使用。
+本仓库的代码依照 [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) 协议开源，模型的权重的使用则需要遵循 [Model License](MODEL_LICENSE)。CodeGeeX2-6B 权重对学术研究完全开放，填写[登记表](https://open.bigmodel.cn/mla/form?mcode=CodeGeeX2-6B)申请商业使用。
 
 
 ## 引用
