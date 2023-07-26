@@ -58,6 +58,14 @@ def bubble_sort(list):
 print(bubble_sort([5, 2, 4, 6, 1, 3]))
 ```
 
+Launch Gradio DEMO:
+```
+python ./demo/run_demo.py
+```
+
+❗️Attention:
+* CodeGeeX2 is a base model, which is not instruction-tuned for chatting. It can do tasks like code completion/translation/explaination. To try the instruction-tuned version in CodeGeeX plugins ([VS Code](https://marketplace.visualstudio.com/items?itemName=aminer.codegeex), [Jetbrains](https://plugins.jetbrains.com/plugin/20587-codegeex)).
+* Programming languages can be controled by adding `language tag`, e.g., `# language: Python`. The format should be respected to ensure performance, full list can be found [here](https://github.com/THUDM/CodeGeeX2/blob/main/evaluation/utils.py#L14). Please write comments under the format of the selected programming language to achieve better results.
 ## Evaluation
 
 CodeGeeX2 is a base model for multilingual code generation, which has been significantly improved in its coding ability compared to the previous generation. The following are the evaluation results on the HumanEval, HumanEval-X, and DS1000 benchmarks (the evaluation metric Pass@k is the same as in the [paper](https://arxiv.org/abs/2303.17568)):
