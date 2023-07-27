@@ -1,11 +1,12 @@
 ![](resources/codegeex_logo.png)
 
 <p align="center">
-    🏠 <a href="https://codegeex.cn" target="_blank">主页</a>｜🛠 插件 <a href="https://marketplace.visualstudio.com/items?itemName=aminer.codegeex" target="_blank">VS Code</a>, <a href="https://plugins.jetbrains.com/plugin/20587-codegeex" target="_blank">Jetbrains</a>｜🤗 <a href="https://huggingface.co/THUDM/codegeex2-6b" target="_blank">HF Repo</a>｜📄 <a href="https://arxiv.org/abs/2303.17568" target="_blank">论文</a>｜👋 加入<a href="resources/wechat.md"target="_blank">微信开发者交流群</a> 
+    🏠 <a href="https://codegeex.cn" target="_blank">主页</a>｜🛠 插件 <a href="https://marketplace.visualstudio.com/items?itemName=aminer.codegeex" target="_blank">VS Code</a>, <a href="https://plugins.jetbrains.com/plugin/20587-codegeex" target="_blank">Jetbrains</a>｜🤗 <a href="https://huggingface.co/THUDM/codegeex2-6b" target="_blank">HF Repo</a>｜📄 <a href="https://arxiv.org/abs/2303.17568" target="_blank">论文</a>｜👋 加入<a href="resources/wechat.md"target="_blank">微信开发者交流群</a>
 </p>
 
 Read this in [English](README_EN.md)<br>
 [日本語](README_JA.md)で読む
+Lire en [Français](README_FR.md)
 
 # CodeGeeX2: 更强大的多语言代码生成模型
 
@@ -145,7 +146,7 @@ CodeGeeX2 与上一代相比，对部署更加友好。得益于使用 Multi-Que
 
 ```
 @inproceedings{zheng2023codegeex,
-      title={CodeGeeX: A Pre-Trained Model for Code Generation with Multilingual Evaluations on HumanEval-X}, 
+      title={CodeGeeX: A Pre-Trained Model for Code Generation with Multilingual Evaluations on HumanEval-X},
       author={Qinkai Zheng and Xiao Xia and Xu Zou and Yuxiao Dong and Shan Wang and Yufei Xue and Zihan Wang and Lei Shen and Andi Wang and Yang Li and Teng Su and Zhilin Yang and Jie Tang},
       booktitle={KDD},
       year={2023}

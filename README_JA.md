@@ -9,7 +9,8 @@
 </p>
 
 查看[中文版](README.md)<br>
-Read this in [English](README_EN.md)
+Read this in [English](README_EN.md)<br>
+Lire en [Français](README_FR.md)
 
 # CodeGeeX2: より強力な多言語コード生成モデル
 
