@@ -8,7 +8,7 @@
     👋 <a href="https://discord.gg/8gjHdkmAN6" target="_blank">Discord</a> に参加, <a href="https://join.slack.com/t/codegeexworkspace/shared_invite/zt-1s118ffrp-mpKKhQD0tKBmzNZVCyEZLw" target="_blank">Slack</a>, <a href="https://t.me/+IipIayJ32B1jOTg1" target="_blank">Telegram</a>, <a href="resources/wechat.md"target="_blank">WeChat</a>
 </p>
 
-查看[中文版](README.md)
+查看[中文版](README.md)<br>
 Read this in [English](README_EN.md)
 
 # CodeGeeX2: より強力な多言語コード生成モデル
