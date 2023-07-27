@@ -5,6 +5,7 @@
 </p>
 
 Read this in [English](README_EN.md)
+[日本語](README_JA.md)で読む
 
 # CodeGeeX2: 更强大的多语言代码生成模型
 

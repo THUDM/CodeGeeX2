@@ -9,6 +9,7 @@
 </p>
 
 查看[中文版](README.md)
+[日本語](README_JA.md)で読む
 
 # CodeGeeX2: A More Powerful Multilingual Code Generation Model
 
