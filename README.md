@@ -69,6 +69,26 @@ python ./demo/run_demo.py
     ```python
     model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True).half().cuda()
     ```
+* 如果需要使用多显卡加载模型,可以将以下代码：
+    ```python
+    tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
+    model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True, device='cuda')
+    model = model.eval()
+    ```
+    替换为
+
+    ```python
+    def get_model():
+        tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
+        from gpus import load_model_on_gpus
+        # gpus文件在demo文件夹中
+        model = load_model_on_gpus("THUDM/codegeex2-6b", num_gpus=2)
+        model = model.eval()
+        return tokenizer, model
+
+    tokenizer, model = get_model()
+    ```
+
 
 ## 代码能力评测
 

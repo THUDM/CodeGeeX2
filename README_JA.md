@@ -68,6 +68,25 @@ python ./demo/run_demo.py
 ❗️注意:
 * CodeGeeX2 はベースモデルであり、チャット用の命令チューニングはされていません。コード補完/翻訳/説明のようなタスクは可能です。CodeGeeX のプラグイン([VS Code](https://marketplace.visualstudio.com/items?itemName=aminer.codegeex), [Jetbrains](https://plugins.jetbrains.com/plugin/20587-codegeex))で命令チューニングされたバージョンを試すことができます。
 * プログラミング言語は、`# language: Python` のように `language tag` を追加することで制御できます。パフォーマンスを確保するため、書式を守る必要があります。完全なリストは[こちら](https://github.com/THUDM/CodeGeeX2/blob/main/evaluation/utils.py#L14)にあります。より良い結果を得るためには、選択したプログラミング言語のフォーマットでコメントを書いてください。
+* 複数のグラフィックカードを使用してモデルをロードする必要がある場合は、以下のコードを使用できます：
+    ```python
+    tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
+    model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True, device='cuda')
+    model = model.eval()
+    ```
+    をに置き換えてください
+
+    ```python
+    def get_model():
+        tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
+        from gpus import load_model_on_gpus
+        # gpusファイルはdemoフォルダにあります
+        model = load_model_on_gpus("THUDM/codegeex2-6b", num_gpus=2)
+        model = model.eval()
+        return tokenizer, model
+
+    tokenizer, model = get_model()
+    ```
 ## 評価
 
 CodeGeeX2 は多言語コード生成のベースモデルであり、前世代と比較してコーディング能力が大幅に向上しています。HumanEval、HumanEval-X、DS1000 ベンチマークでの評価結果を以下に示します（評価指標 Pass@k は[論文](https://arxiv.org/abs/2303.17568)と同じです）:

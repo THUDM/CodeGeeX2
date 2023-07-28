@@ -7,12 +7,19 @@ import gradio as gr
 
 from transformers import AutoTokenizer, AutoModel
 
-tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
-model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True).to('cuda:0')
-model = model.eval()
+def get_model():
+    tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
+    model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True).to('cuda:0')
+    # 如需实现多显卡模型加载,请将上面一行注释并启用一下两行,"num_gpus"调整为自己需求的显卡数量 / To enable Multiple GPUs model loading, please uncomment the line above and enable the following two lines. Adjust "num_gpus" to the desired number of graphics cards.
+    # from gpus import load_model_on_gpus
+    # model = load_model_on_gpus("THUDM/codegeex2-6b", num_gpus=2)
+    model = model.eval()
+    return tokenizer, model
+
+tokenizer, model = get_model()
 
 examples = []
-with open(os.path.join(os.path.split(os.path.realpath(__file__))[0], "example_inputs.jsonl"), "r") as f:
+with open(os.path.join(os.path.split(os.path.realpath(__file__))[0], "example_inputs.jsonl"), "r", encoding="utf-8") as f:
     for line in f:
         examples.append(list(json.loads(line).values()))
 

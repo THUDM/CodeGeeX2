@@ -68,6 +68,25 @@ python ./demo/run_demo.py
 ❗️Attention:
 * Cette version de CodeGeeX2 est capable de compléter / expliquer / traduire du code mais n'a pas été fine-tuned pour être utilisé comme un chatbot. Pour accéder à la version chatbot de CodeGeeX, utilisez les extensions [VS Code](https://marketplace.visualstudio.com/items?itemName=aminer.codegeex) et [Jetbrains](https://plugins.jetbrains.com/plugin/20587-codegeex).
 * Pour controller le langage dans lequel CodeGeeX2 opère, utilisez des tags formattés ainsi: `# language: Python`. La liste de tous les langages de programmations que CodeGeeX supporte est accessible [ici](https://github.com/THUDM/CodeGeeX2/blob/main/evaluation/utils.py#L14).
+* Si vous avez besoin d'utiliser plusieurs GPU pour charger le modèle, vous pouvez utiliser le code suivant:
+    ```python
+    tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
+    model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True, device='cuda')
+    model = model.eval()
+    ```
+    Remplacer par
+
+    ```python
+    def get_model():
+        tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
+        from gpus import load_model_on_gpus
+        # Le fichier "gpus" se trouve dans le dossier de démonstration
+        model = load_model_on_gpus("THUDM/codegeex2-6b", num_gpus=2)
+        model = model.eval()
+        return tokenizer, model
+
+    tokenizer, model = get_model()
+    ```
 
 ## Evaluation
 
