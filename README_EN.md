@@ -9,7 +9,8 @@
 </p>
 
 查看[中文版](README.md)<br>
-[日本語](README_JA.md)で読む
+[日本語](README_JA.md)で読む<br>
+Lire en [Français](README_FR.md)
 
 # CodeGeeX2: A More Powerful Multilingual Code Generation Model
 
@@ -147,7 +148,7 @@ If you find our work helpful, please feel free to cite the following paper:
 
 ```
 @inproceedings{zheng2023codegeex,
-      title={CodeGeeX: A Pre-Trained Model for Code Generation with Multilingual Evaluations on HumanEval-X}, 
+      title={CodeGeeX: A Pre-Trained Model for Code Generation with Multilingual Evaluations on HumanEval-X},
       author={Qinkai Zheng and Xiao Xia and Xu Zou and Yuxiao Dong and Shan Wang and Yufei Xue and Zihan Wang and Lei Shen and Andi Wang and Yang Li and Teng Su and Zhilin Yang and Jie Tang},
       booktitle={KDD},
       year={2023}
