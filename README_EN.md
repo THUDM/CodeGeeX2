@@ -72,6 +72,25 @@ python ./demo/run_demo.py
     ```python
     model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True).half().cuda()
     ```
+* If you need to use Multiple GPUs to load the model, you can use the following code:
+    ```python
+    tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
+    model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True, device='cuda')
+    model = model.eval()
+    ```
+    Replace with
+
+    ```python
+    def get_model():
+        tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
+        from gpus import load_model_on_gpus
+        # The "gpus" file is located in the demo folder
+        model = load_model_on_gpus("THUDM/codegeex2-6b", num_gpus=2)
+        model = model.eval()
+        return tokenizer, model
+
+    tokenizer, model = get_model()
+    ```
 
 ## Evaluation
 
