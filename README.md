@@ -65,6 +65,10 @@ python ./demo/run_demo.py
 ❗️请注意：
 * CodeGeeX2-6B 是一个基座代码生成模型，不具备聊天能力。请前往插件中体验更全面的 Ask CodeGeeX 聊天功能。
 * 在使用 CodeGeeX2-6B 的补全功能时，输入prompt需要遵循特定的格式以获得最好的效果。比如需要在开头加入编程语言标签（`# language: Python`，请查看[完整语言列表](https://github.com/THUDM/CodeGeeX2/blob/main/evaluation/utils.py#L14)），以注释的形式写prompt等。参考`run_demo.py`中的处理。
+* 如果显卡不支持`bfloat16`格式，将会输出错误的内容，需要将模型转换成`float16`格式：
+    ```python
+    model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True).half().cuda()
+    ```
 
 ## 代码能力评测
 
