@@ -11,7 +11,7 @@ def get_model():
     tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
     model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True).to('cuda:0')
     # 如需实现多显卡模型加载,请将上面一行注释并启用一下两行,"num_gpus"调整为自己需求的显卡数量
-    # from utils import load_model_on_gpus
+    # from gpus import load_model_on_gpus
     # model = load_model_on_gpus("THUDM/codegeex2-6b", num_gpus=2)
     model = model.eval()
     return tokenizer, model
