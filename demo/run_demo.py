@@ -3,27 +3,107 @@ import json
 import numpy
 import torch
 import random
+import argparse
 import gradio as gr
 
 from transformers import AutoTokenizer, AutoModel
 
-def get_model():
-    tokenizer = AutoTokenizer.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True)
-    model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True).to('cuda:0')
-    # 如需实现多显卡模型加载,请将上面一行注释并启用一下两行,"num_gpus"调整为自己需求的显卡数量 / To enable Multiple GPUs model loading, please uncomment the line above and enable the following two lines. Adjust "num_gpus" to the desired number of graphics cards.
-    # from gpus import load_model_on_gpus
-    # model = load_model_on_gpus("THUDM/codegeex2-6b", num_gpus=2)
-    model = model.eval()
+try:
+    # Should first install fastllm (https://github.com/ztxz16/fastllm.git)
+    from fastllm_pytools import llm
+    enable_fastllm = True
+except:
+    print("fastllm disabled.")
+    enable_fastllm = False
+
+try:
+    from gpus import load_model_on_gpus
+    enable_multiple_gpus = True
+except:
+    print("Multiple GPUs support disabled.")
+    enable_multiple_gpus = False
+
+
+def get_model(args):
+    if not args.cpu:
+        if torch.cuda.is_available():
+            device = f"cuda:{args.gpu}"
+        elif torch.backends.mps.is_built():
+            device = "mps"
+        else:
+            device = "cpu"
+    else:
+        device = "cpu"
+    
+    tokenizer = AutoTokenizer.from_pretrained(args.model_path, trust_remote_code=True)
+
+    if args.n_gpus > 1 and enable_multiple_gpus:
+        # 如需实现多显卡模型加载,传入"n_gpus"为需求的显卡数量 / To enable Multiple GPUs model loading, please adjust "n_gpus" to the desired number of graphics cards.
+        print(f"Runing on {args.n_gpus} GPUs.")
+        model = load_model_on_gpus(args.model_path, num_gpus=args.n_gpus)
+        model = model.eval()
+    else:
+        model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True)
+        model = model.eval()
+
+        if enable_fastllm and args.fastllm:
+            print("fastllm enabled.")
+            model = model.half()
+            llm.set_device_map(device)
+            if args.quantize in [4, 8]:
+                model = llm.from_hf(model, dtype=f"int{args.quantize}")
+            else:
+                model = llm.from_hf(model, dtype="float16")
+        else:
+            print("fastllm not installed, using transformers.")
+            if args.quantize in [4, 8]:
+                print(f"Model is quantized to INT{args.quantize} format.")
+                model = model.half().quantize(args.quantize)
+            model = model.to(device)
+
     return tokenizer, model
 
-tokenizer, model = get_model()
 
-examples = []
-with open(os.path.join(os.path.split(os.path.realpath(__file__))[0], "example_inputs.jsonl"), "r", encoding="utf-8") as f:
-    for line in f:
-        examples.append(list(json.loads(line).values()))
-
+def add_code_generation_args(parser):
+    group = parser.add_argument_group(title="CodeGeeX2 DEMO")
+    group.add_argument(
+        "--model-path",
+        type=str,
+        default="THUDM/codegeex2-6b",
+    )
+    group.add_argument(
+        "--example-path",
+        type=str,
+        default=None,
+    )
+    group.add_argument(
+        "--quantize",
+        type=int,
+        default=None,
+    )
+    group.add_argument(
+        "--fastllm",
+        action="store_true",
+    )
+    group.add_argument(
+        "--n-gpus",
+        type=int,
+        default=1,
+    )
+    group.add_argument(
+        "--gpu",
+        type=int,
+        default=0,
+    )
+    group.add_argument(
+        "--cpu",
+        action="store_true",
+    )
     
+    return parser
+
+
+# 更完编程语言列表请查看 evaluation/utils.py / Full list of supported languages in evaluation/utils.py
 LANGUAGE_TAG = {
     "Abap"         : "* language: Abap",
     "ActionScript" : "// language: ActionScript",
@@ -103,6 +183,24 @@ def set_random_seed(seed):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser = add_code_generation_args(parser)
+    args, _ = parser.parse_known_args()
+
+    tokenizer, model = get_model(args)
+
+    examples = []
+    if args.example_path is None:
+        example_path = os.path.join(os.path.split(os.path.realpath(__file__))[0], "example_inputs.jsonl")
+    else:
+        example_path = args.example_path
+
+    # Load examples for gradio DEMO
+    with open(example_path, "r", encoding="utf-8") as f:
+        for line in f:
+            examples.append(list(json.loads(line).values()))
+
+
     def predict(
         prompt, 
         lang,
@@ -116,17 +214,27 @@ def main():
         if lang != "None":
             prompt = LANGUAGE_TAG[lang] + "\n" + prompt
         
-        inputs = tokenizer([prompt], return_tensors="pt")
-        inputs = inputs.to(model.device)    
-        outputs = model.generate(**inputs, 
-                                max_length=inputs['input_ids'].shape[-1] + out_seq_length, 
-                                do_sample=True, 
-                                top_p=top_p, 
-                                top_k=top_k,
-                                temperature=temperature,
-                                pad_token_id=2,
-                                eos_token_id=2)
-        response = tokenizer.decode(outputs[0])
+        if enable_fastllm and args.fastllm:
+            model.direct_query = True
+            outputs = model.chat(tokenizer, 
+                                 prompt,
+                                 max_length=out_seq_length,
+                                 top_p=top_p,
+                                 top_k=top_k,
+                                 temperature=temperature)
+            response = outputs[0]
+        else:
+            inputs = tokenizer([prompt], return_tensors="pt")
+            inputs = inputs.to(model.device)
+            outputs = model.generate(**inputs,
+                                     max_length=inputs['input_ids'].shape[-1] + out_seq_length,
+                                     do_sample=True,
+                                     top_p=top_p,
+                                     top_k=top_k,
+                                     temperature=temperature,
+                                     pad_token_id=2,
+                                     eos_token_id=2)
+            response = tokenizer.decode(outputs[0])
         
         return response
     
@@ -140,7 +248,7 @@ def main():
         gr.Markdown(
             """
             <p align="center">
-                🏠 <a href="https://codegeex.cn" target="_blank">Homepage</a>｜💻 <a href="https://github.com/THUDM/CodeGeeX2" target="_blank">GitHub</a>｜🛠 Tools <a href="https://marketplace.visualstudio.com/items?itemName=aminer.codegeex" target="_blank">VS Code</a>, <a href="https://plugins.jetbrains.com/plugin/20587-codegeex" target="_blank">Jetbrains</a>｜🤗 <a href="https://huggingface.co/THUDM/codegeex2-6b" target="_blank">HF Repo</a>｜📄 <a href="https://arxiv.org/abs/2303.17568" target="_blank">Paper</a>
+                🏠 <a href="https://codegeex.cn" target="_blank">Homepage</a>｜💻 <a href="https://github.com/THUDM/CodeGeeX2" target="_blank">GitHub</a>｜🛠 Tools <a href="https://marketplace.visualstudio.com/items?itemName=aminer.codegeex" target="_blank">VS Code</a>, <a href="https://plugins.jetbrains.com/plugin/20587-codegeex" target="_blank">Jetbrains</a>｜🤗 <a href="https://huggingface.co/THUDM/codegeex2-6b" target="_blank">Download</a>｜📄 <a href="https://arxiv.org/abs/2303.17568" target="_blank">Paper</a>
             </p>
             """)
         gr.Markdown(
