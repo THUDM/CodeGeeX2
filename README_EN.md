@@ -39,13 +39,13 @@ model = AutoModel.from_pretrained("THUDM/codegeex2-6b", trust_remote_code=True, 
 model = model.eval()
 
 # remember adding a language tag for better performance
-prompt = "# language: python\n# write a bubble sort function\n"
+prompt = "# language: Python\n# write a bubble sort function\n"
 inputs = tokenizer.encode(prompt, return_tensors="pt").to(model.device)
 outputs = model.generate(inputs, max_length=256, top_k=1)
 response = tokenizer.decode(outputs[0])
 
 >>> print(response)
-# language: python
+# language: Python
 # write a bubble sort function
 
 
@@ -57,7 +57,7 @@ def bubble_sort(list):
     return list
 
 
-print(bubble_sort([5, 2, 4, 6, 1, 3]))
+print(bubble_sort([5, 2, 1, 8, 4]))
 ```
 
 Launch Gradio DEMO:
