@@ -17,6 +17,10 @@ CodeGeeX2 是多语言代码生成模型 [CodeGeeX](https://github.com/THUDM/Cod
 * **更全面的AI编程助手**：CodeGeeX插件（[VS Code](https://marketplace.visualstudio.com/items?itemName=aminer.codegeex), [Jetbrains](https://plugins.jetbrains.com/plugin/20587-codegeex)）后端升级，支持超过100种编程语言，新增上下文补全、跨文件补全等实用功能。结合 Ask CodeGeeX 交互式AI编程助手，支持中英文对话解决各种编程问题，包括且不限于代码解释、代码翻译、代码纠错、文档生成等，帮助程序员更高效开发。
 * **更开放的协议**：CodeGeeX2-6B 权重对学术研究完全开放，填写[登记表](https://open.bigmodel.cn/mla/form?mcode=CodeGeeX2-6B)申请商业使用。
 
+## 使用教程
+
+* [快速开始](#快速开始)
+* [推理教程（多卡推理，加速推理，多平台推理等）](docs/zh/inference_zh.md)
 
 ## AI编程助手
 
@@ -60,6 +64,9 @@ print(bubble_sort([5, 2, 1, 8, 4]))
 启动 Gradio DEMO：
 ```
 python ./demo/run_demo.py
+
+usage: run_demo.py [-h] [--model-path MODEL_PATH] [--example-path EXAMPLE_PATH] [--quantize QUANTIZE]
+                   [--fastllm] [--n-gpus N_GPUS] [--gpu GPU] [--cpu]
 ```
 
 ❗️请注意：
@@ -88,10 +95,6 @@ python ./demo/run_demo.py
 
     tokenizer, model = get_model()
     ```
-
-## 使用教程
-
-* [推理教程(多卡推理，加速推理，多平台推理等)](docs/zh/inference_zh.md)
 
 ## 代码能力评测
 
