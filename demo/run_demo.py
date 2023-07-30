@@ -222,7 +222,7 @@ def main():
                                  top_p=top_p,
                                  top_k=top_k,
                                  temperature=temperature)
-            response = outputs[0]
+            response = prompt + outputs[0]
         else:
             inputs = tokenizer([prompt], return_tensors="pt")
             inputs = inputs.to(model.device)
@@ -253,6 +253,11 @@ def main():
             """)
         gr.Markdown(
             """
+            这是 CodeGeeX2 的简易DEMO。请注意：
+            * CodeGeeX2 是一个基座模型，它可以完成代码补全/翻译/解释等任务，没有针对聊天进行指令微调。可以在 CodeGeeX 插件[VS Code](https://marketplace.visualstudio.com/items?itemName=aminer.codegeex)、[Jetbrains](https://plugins.jetbrains.com/plugin/20587-codegeex)中体验指令微调后的版本。
+            * 可以通过添加`language tag`来控制编程语言，例如`# language: Python`，查看[完整支持语言列表](https://github.com/THUDM/CodeGeeX2/blob/main/evaluation/utils.py#L14)。
+            * 按照所选编程语言的格式写注释可以获得更好的结果，请参照下方给出的示例。
+
             This is the DEMO for CodeGeeX2. Please note that:
             * CodeGeeX2 is a base model, which is not instruction-tuned for chatting. It can do tasks like code completion/translation/explaination. To try the instruction-tuned version in CodeGeeX plugins ([VS Code](https://marketplace.visualstudio.com/items?itemName=aminer.codegeex), [Jetbrains](https://plugins.jetbrains.com/plugin/20587-codegeex)).
             * Programming languages can be controled by adding `language tag`, e.g., `# language: Python`. The format should be respected to ensure performance, full list can be found [here](https://github.com/THUDM/CodeGeeX2/blob/main/evaluation/utils.py#L14).
@@ -261,7 +266,7 @@ def main():
 
         with gr.Row():
             with gr.Column():
-                prompt = gr.Textbox(lines=13, placeholder='Please enter the description or select an example input below.',label='Input')
+                prompt = gr.Textbox(lines=14, placeholder='Please enter the description or select an example input below.',label='Input')
                 with gr.Row():
                     gen = gr.Button("Generate")
                     clr = gr.Button("Clear")
