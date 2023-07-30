@@ -89,6 +89,9 @@ python ./demo/run_demo.py
     tokenizer, model = get_model()
     ```
 
+## 使用教程
+
+* [推理教程(多卡推理，加速推理，多平台推理等)](docs/zh/inference_zh.md)
 
 ## 代码能力评测
 
