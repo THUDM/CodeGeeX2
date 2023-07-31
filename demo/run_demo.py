@@ -119,10 +119,9 @@ def add_code_generation_args(parser):
         type=str,
         default=None,
     )
-     group.add_argument(
+    group.add_argument(
         "--auth",
         action="store_true",
-        default=0,
     )
     
     
