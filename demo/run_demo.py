@@ -102,7 +102,7 @@ def add_code_generation_args(parser):
     group.add_argument(
         "--listen",
         type=str,
-        default=127.0.0.1,
+        default="127.0.0.1",
     )
     group.add_argument(
         "--port",
