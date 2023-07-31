@@ -66,7 +66,8 @@ print(bubble_sort([5, 2, 1, 8, 4]))
 python ./demo/run_demo.py
 
 usage: run_demo.py [-h] [--model-path MODEL_PATH] [--example-path EXAMPLE_PATH] [--quantize QUANTIZE]
-                   [--fastllm] [--n-gpus N_GPUS] [--gpu GPU] [--cpu]
+                   [--fastllm] [--n-gpus N_GPUS] [--gpu GPU] [--cpu] [--username yourname] [--password yourpassword]
+                   [--port PORT] [--listen]
 ```
 
 ❗️请注意：
