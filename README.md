@@ -71,7 +71,7 @@ usage: run_demo.py [-h] [--model-path MODEL_PATH] [--example-path EXAMPLE_PATH] 
                    [--port PORT] [--listen ADDRESS]
 ```
 
-- 请注意,若要启用身份验证,请先启用--auth,然后定义--username与--userpassword,例如
+- 请注意,若要启用身份验证,请先启用--auth,然后定义--username与--password,例如
 ```
 python run_demo.py --auth --username user --password password
 ```
