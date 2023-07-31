@@ -299,6 +299,8 @@ def main():
                                   examples_per_page=20)
         
     demo.launch(share=True)
+    #如果需要监听0.0.0.0和其他端口 可以改成 demo.launch(server_name="0.0.0.0", server_port=6666)
+    #如果需要加密码 demo.launch(server_name="0.0.0.0", server_port=6666, auth=("admin", "password"))
 
 if __name__ == '__main__':
     with torch.no_grad():
