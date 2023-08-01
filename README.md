@@ -31,7 +31,7 @@ CodeGeeX2 是多语言代码生成模型 [CodeGeeX](https://github.com/THUDM/Cod
 
 ## 快速开始
 
-使用`transformers`快速调用[CodeGeeX2-6B](https://huggingface.co/THUDM/codegeex2-6b)：
+### 使用`transformers`快速调用[CodeGeeX2-6B](https://huggingface.co/THUDM/codegeex2-6b)：
 
 ```python
 from transformers import AutoTokenizer, AutoModel
@@ -61,7 +61,7 @@ def bubble_sort(list):
 print(bubble_sort([5, 2, 1, 8, 4]))
 ```
 
-启动 Gradio DEMO：
+### 启动 Gradio DEMO：
 ```
 python ./demo/run_demo.py
 
@@ -73,6 +73,12 @@ usage: run_demo.py [-h] [--model-path MODEL_PATH] [--example-path EXAMPLE_PATH] 
 # 若要启用身份验证，请先启用--auth，然后定义--username与--password，如：
 python run_demo.py --auth --username user --password password  # 若要监听所有地址请指定 --listen 0.0.0.0
 ```
+### 启动FAST API CPU:
+```
+python ./demo/fastapicpu.py
+usage: fastapicpu.py [-h] [--model-path MODEL_PATH] [--listen ADDRESS] [--port PORT] [--workders NUM]
+```
+
 ❗️请注意：
 * CodeGeeX2-6B 是一个基座代码生成模型，不具备聊天能力。请前往插件中体验更全面的 Ask CodeGeeX 聊天功能。
 * 在使用 CodeGeeX2-6B 的补全功能时，输入prompt需要遵循特定的格式以获得最好的效果。比如需要在开头加入编程语言标签（`# language: Python`，请查看[完整语言列表](https://github.com/THUDM/CodeGeeX2/blob/main/evaluation/utils.py#L14)），以注释的形式写prompt等。参考`run_demo.py`中的处理。
