@@ -66,9 +66,17 @@ print(bubble_sort([5, 2, 1, 8, 4]))
 python ./demo/run_demo.py
 
 usage: run_demo.py [-h] [--model-path MODEL_PATH] [--example-path EXAMPLE_PATH] [--quantize QUANTIZE]
-                   [--fastllm] [--n-gpus N_GPUS] [--gpu GPU] [--cpu] [--username yourname] [--password yourpassword]
-                   [--port PORT] [--listen]
+                   [--fastllm] [--n-gpus N_GPUS] [--gpu GPU] [--cpu] [--auth] [--username yourname]
+                   [--password yourpassword]
+                   [--port PORT] [--listen ADDRESS]
 ```
+
+- 请注意,若要启用身份验证,请先启用--auth,然后定义--username与--password,例如
+```
+python run_demo.py --auth --username user --password password
+```
+
+- 若要监听所有地址请指定--listen 0.0.0.0
 
 ❗️请注意：
 * CodeGeeX2-6B 是一个基座代码生成模型，不具备聊天能力。请前往插件中体验更全面的 Ask CodeGeeX 聊天功能。

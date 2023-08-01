@@ -101,7 +101,8 @@ def add_code_generation_args(parser):
     )
     group.add_argument(
         "--listen",
-        action="store_true",
+        type=str,
+        default="127.0.0.1",
     )
     group.add_argument(
         "--port",
@@ -118,6 +119,11 @@ def add_code_generation_args(parser):
         type=str,
         default=None,
     )
+    group.add_argument(
+        "--auth",
+        action="store_true",
+    )
+    
     
     return parser
 
@@ -316,10 +322,10 @@ def main():
         gr_examples = gr.Examples(examples=examples, inputs=[prompt, lang],
                                   label="Example Inputs (Click to insert an examplet it into the input box)",
                                   examples_per_page=20)
-    if not args.listen:
-        demo.launch()
+    if not args.auth:
+        demo.launch(server_name=args.listen, server_port=args.port)
     else:
-        demo.launch(server_name="0.0.0.0", server_port=args.port, auth=(args.username, args.password))
+        demo.launch(server_name=args.listen, server_port=args.port, auth=(args.username, args.password))
     
     #如果需要监听0.0.0.0和其他端口 可以改成 demo.launch(server_name="0.0.0.0", server_port=6666)
     #如果需要加密码 demo.launch(server_name="0.0.0.0", server_port=6666, auth=("admin", "password"))

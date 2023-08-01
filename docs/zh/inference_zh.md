@@ -134,6 +134,14 @@ cd tools && python setup.py install  # 确认安装是否成功，在python中 i
 ```shell
 # set(CMAKE_CUDA_ARCHITECTURES "native")
 ```
+如果是E5系列的CPU可能会出现下面的编译报错
+```
+ error: inlining failed in call to ‘always_inline’ ‘__m256i _mm256_add_epi32(__m256i, __m256i)’: target specific option mismatch
+```
+此时将'CmakeLists.txt'的第20行修改如下即可编译成功:
+```
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread --std=c++17 -O2")
+```
 
 将huggingface转换成fastllm格式：
 
