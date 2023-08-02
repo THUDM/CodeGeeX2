@@ -73,10 +73,11 @@ usage: run_demo.py [-h] [--model-path MODEL_PATH] [--example-path EXAMPLE_PATH] 
 # 若要启用身份验证，请先启用--auth，然后定义--username与--password，如：
 python run_demo.py --auth --username user --password password  # 若要监听所有地址请指定 --listen 0.0.0.0
 ```
-### 启动FAST API CPU:
+### 启动FAST API:
 ```
 python ./demo/fastapicpu.py
-usage: fastapicpu.py [-h] [--model-path MODEL_PATH] [--listen ADDRESS] [--port PORT] [--workders NUM]
+usage: fastapicpu.py [-h] [--model-path MODEL_PATH] [--listen ADDRESS] [--port PORT] [--workders NUM] [--cpu] [--half]
+# --cpu启用cpu --half启用.half()
 ```
 
 ❗️请注意：
