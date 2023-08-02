@@ -36,6 +36,75 @@ def add_code_generation_args(parser):
     )
     return parser
 
+LANGUAGE_TAG = {
+    "Abap"         : "* language: Abap",
+    "ActionScript" : "// language: ActionScript",
+    "Ada"          : "-- language: Ada",
+    "Agda"         : "-- language: Agda",
+    "ANTLR"        : "// language: ANTLR",
+    "AppleScript"  : "-- language: AppleScript",
+    "Assembly"     : "; language: Assembly",
+    "Augeas"       : "// language: Augeas",
+    "AWK"          : "// language: AWK",
+    "Basic"        : "' language: Basic",
+    "C"            : "// language: C",
+    "C#"           : "// language: C#",
+    "C++"          : "// language: C++",
+    "CMake"        : "# language: CMake",
+    "Cobol"        : "// language: Cobol",
+    "CSS"          : "/* language: CSS */",
+    "CUDA"         : "// language: Cuda",
+    "Dart"         : "// language: Dart",
+    "Delphi"       : "{language: Delphi}",
+    "Dockerfile"   : "# language: Dockerfile",
+    "Elixir"       : "# language: Elixir",
+    "Erlang"       : f"% language: Erlang",
+    "Excel"        : "' language: Excel",
+    "F#"           : "// language: F#",
+    "Fortran"      : "!language: Fortran",
+    "GDScript"     : "# language: GDScript",
+    "GLSL"         : "// language: GLSL",
+    "Go"           : "// language: Go",
+    "Groovy"       : "// language: Groovy",
+    "Haskell"      : "-- language: Haskell",
+    "HTML"         : "<!--language: HTML-->",
+    "Isabelle"     : "(*language: Isabelle*)",
+    "Java"         : "// language: Java",
+    "JavaScript"   : "// language: JavaScript",
+    "Julia"        : "# language: Julia",
+    "Kotlin"       : "// language: Kotlin",
+    "Lean"         : "-- language: Lean",
+    "Lisp"         : "; language: Lisp",
+    "Lua"          : "// language: Lua",
+    "Markdown"     : "<!--language: Markdown-->",
+    "Matlab"       : f"% language: Matlab",
+    "Objective-C"  : "// language: Objective-C",
+    "Objective-C++": "// language: Objective-C++",
+    "Pascal"       : "// language: Pascal",
+    "Perl"         : "# language: Perl",
+    "PHP"          : "// language: PHP",
+    "PowerShell"   : "# language: PowerShell",
+    "Prolog"       : f"% language: Prolog",
+    "Python"       : "# language: Python",
+    "R"            : "# language: R",
+    "Racket"       : "; language: Racket",
+    "RMarkdown"    : "# language: RMarkdown",
+    "Ruby"         : "# language: Ruby",
+    "Rust"         : "// language: Rust",
+    "Scala"        : "// language: Scala",
+    "Scheme"       : "; language: Scheme",
+    "Shell"        : "# language: Shell",
+    "Solidity"     : "// language: Solidity",
+    "SPARQL"       : "# language: SPARQL",
+    "SQL"          : "-- language: SQL",
+    "Swift"        : "// language: swift",
+    "TeX"          : f"% language: TeX",
+    "Thrift"       : "/* language: Thrift */",
+    "TypeScript"   : "// language: TypeScript",
+    "Vue"          : "<!--language: Vue-->",
+    "Verilog"      : "// language: Verilog",
+    "Visual Basic" : "' language: Visual Basic",
+}
 
 app = FastAPI()
 def device():
@@ -56,21 +125,25 @@ async def create_item(request: Request):
     json_post_raw = await request.json()
     json_post = json.dumps(json_post_raw)
     json_post_list = json.loads(json_post)
+    lang = json_post_list.get('lang')
     prompt = json_post_list.get('prompt')
     max_length = json_post_list.get('max_length')
     top_p = json_post_list.get('top_p')
     temperature = json_post_list.get('temperature')
     top_k = json_post_list.get('top_k')
+    if lang != "None":
+        prompt = LANGUAGE_TAG[lang] + "\n" + prompt
     response = model.chat(tokenizer,
-                                   prompt,
-                                   max_length=max_length if max_length else 128,
-                                   top_p=top_p if top_p else 0.95,
-                                   top_k=top_k if top_k else 0,
-                                   temperature=temperature if temperature else 0.2)
+                          prompt,
+                          max_length=max_length if max_length else 128,
+                          top_p=top_p if top_p else 0.95,
+                          top_k=top_k if top_k else 0,
+                          temperature=temperature if temperature else 0.2)
     now = datetime.datetime.now()
     time = now.strftime("%Y-%m-%d %H:%M:%S")
     answer = {
         "response": response,
+        "lang": lang,
         "status": 200,
         "time": time
     }
