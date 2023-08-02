@@ -26,12 +26,28 @@ def add_code_generation_args(parser):
         type=int,
         default=1,
     )
-
+    group.add_argument(                      
+        "--cpu",
+        action="store_true",
+    )
+    group.add_argument(                      
+        "--half",
+        action="store_true",
+    )
     return parser
 
 
 app = FastAPI()
+def device():
+    if not args.cpu:
+        if not args.half:
+            model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True).cuda()
+        else:
+            model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True).cuda().half()
+    else:
+        model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True)
 
+    return model
 
 @app.post("/")
 async def create_item(request: Request):
@@ -68,7 +84,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser = add_code_generation_args(parser)
     args, _ = parser.parse_known_args()
-    model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True)
+    model = device()
     model.eval()
     uvicorn.run(app, host=args.listen, port=args.port, workers=args.workers)
-   
