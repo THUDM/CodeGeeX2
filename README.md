@@ -79,6 +79,13 @@ python ./demo/fastapicpu.py
 usage: fastapicpu.py [-h] [--model-path MODEL_PATH] [--listen ADDRESS] [--port PORT] [--workders NUM] [--cpu] [--half]
 # --cpu启用cpu --half启用.half()
 ```
+### API使用示例
+```
+curl -X POST "http://127.0.0.1:3435" \                                                                                                                    
+ -H 'Content-Type: application/json' \
+    -d '{"lang": "C", "prompt": "# Write a quick sort function"}' 
+```
+
 
 ❗️请注意：
 * CodeGeeX2-6B 是一个基座代码生成模型，不具备聊天能力。请前往插件中体验更全面的 Ask CodeGeeX 聊天功能。
