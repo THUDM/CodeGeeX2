@@ -7,6 +7,7 @@ CodeGeeX2 是多语言代码生成模型 [CodeGeeX](https://github.com/THUDM/Cod
 - [多GPU推理](#多GPU推理)
 - [Mac推理](#Mac推理)
 - [fastllm加速推理](#fastllm加速推理)
+- [ChatGLM.cpp量化推理](#chatglmcpp-量化推理)
 
 ## 快速开始
 
@@ -168,3 +169,7 @@ outputs = model.chat(tokenizer,
                      temperature=temperature)
 response = outputs[0]
 ```
+
+## ChatGLM.cpp 量化推理
+
+ChatGLM.cpp 是类似 LLaMA.cpp 的全平台量化加速方案，支持 q4_0/q4_1/q5_0/q5_1/q8_0 多种量化精度，CPU/CUDA/Metal 多种后端，部署流程详见项目主页 [README](https://github.com/li-plus/chatglm.cpp)。
