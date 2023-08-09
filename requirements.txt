@@ -4,3 +4,4 @@ accelerate
 cpm_kernels
 torch>=2.0
 sentencepiece
+gradio
