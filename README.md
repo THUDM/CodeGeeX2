@@ -66,24 +66,29 @@ print(bubble_sort([5, 2, 1, 8, 4]))
 python ./demo/run_demo.py
 
 usage: run_demo.py [-h] [--model-path MODEL_PATH] [--example-path EXAMPLE_PATH] [--quantize QUANTIZE]
-                   [--fastllm] [--n-gpus N_GPUS] [--gpu GPU] [--cpu] [--auth] [--username yourname]
+                   [--chatglm-cpp] [--fastllm] [--n-gpus N_GPUS] [--gpu GPU] [--cpu] [--auth] [--username yourname]
                    [--password yourpassword]
                    [--port PORT] [--listen ADDRESS]
 
 # 若要启用身份验证，请先启用--auth，然后定义--username与--password，如：
 python run_demo.py --auth --username user --password password  # 若要监听所有地址请指定 --listen 0.0.0.0
 ```
+支持使用 [ChatGLM.cpp](https://github.com/li-plus/chatglm.cpp) 量化推理加速：
+```sh
+python ./demo/run_demo.py --quantize 4 --chatglm-cpp
+```
 ### 启动FAST API:
 ```
 python ./demo/fastapicpu.py
-usage: fastapicpu.py [-h] [--model-path MODEL_PATH] [--listen ADDRESS] [--port PORT] [--workders NUM] [--cpu] [--half]
+usage: fastapicpu.py [-h] [--model-path MODEL_PATH] [--listen ADDRESS] [--port PORT] [--workders NUM] [--cpu] [--half] [--quantize QUANTIZE] [--chatglm-cpp]
 # --cpu启用cpu --half启用.half()
 ```
+支持使用 [ChatGLM.cpp](https://github.com/li-plus/chatglm.cpp) 量化推理加速，同样添加 `--quantize 4 --chatglm-cpp` 参数即可。
 ### API使用示例
 ```
-curl -X POST "http://127.0.0.1:3435" \                                                                                                                    
- -H 'Content-Type: application/json' \
-    -d '{"lang": "C", "prompt": "# Write a quick sort function"}' 
+curl -X POST "http://127.0.0.1:7860" \
+    -H 'Content-Type: application/json' \
+    -d '{"lang": "Python", "prompt": "# Write a quick sort function"}'
 ```
 
 

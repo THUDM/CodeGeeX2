@@ -172,4 +172,48 @@ response = outputs[0]
 
 ## ChatGLM.cpp 量化推理
 
-ChatGLM.cpp 是类似 LLaMA.cpp 的全平台量化加速方案，支持 q4_0/q4_1/q5_0/q5_1/q8_0 多种量化精度，CPU/CUDA/Metal 多种后端，部署流程详见项目主页 [README](https://github.com/li-plus/chatglm.cpp)。
+[ChatGLM.cpp](https://github.com/li-plus/chatglm.cpp) 是类似 LLaMA.cpp 的全平台量化加速方案，支持 q4_0/q4_1/q5_0/q5_1/q8_0 多种量化精度，CPU/CUDA/Metal 多种后端，仅用一行代码实现推理加速。
+
+首先安装 chatglm-cpp。如需使用 CUDA 加速，需要添加环境变量 `CMAKE_ARGS="-DGGML_CUBLAS=ON"`；如果仅使用 CPU 加速，将该环境变量去掉即可。
+```sh
+CMAKE_ARGS="-DGGML_CUBLAS=ON" pip install chatglm-cpp -v
+```
+
+仅需一行代码即可量化加速 Hugging Face 模型，`dtype` 可指定 `q4_0`, `q4_1`, `q5_0`, `q5_1`, `q8_0`, `f16`，表示不同的量化类型。
+```python
+>>> import chatglm_cpp
+>>> 
+>>> pipeline = chatglm_cpp.Pipeline("THUDM/codegeex2-6b", dtype="q4_0") # Load HF model and quantize it into int4
+Loading checkpoint shards: 100%|███████████████████████████████████████████████| 7/7 [00:09<00:00,  1.33s/it]
+Processing model states: 100%|█████████████████████████████████████████████| 199/199 [00:21<00:00,  9.21it/s]
+...
+>>> print(pipeline.generate("# language: Python\n# write a bubble sort function\n", do_sample=False))
+
+
+def bubble_sort(list):
+    for i in range(len(list) - 1):
+        for j in range(len(list) - 1):
+            if list[j] > list[j + 1]:
+                list[j], list[j + 1] = list[j + 1], list[j]
+    return list
+
+
+print(bubble_sort([5, 4, 3, 2, 1]))
+```
+
+ChatGLM.cpp 已集成到本仓库，demo 添加选项 `--quantize 4 --chatglm-cpp` 即可开启 int4 (q4_0) 量化加速，例如：
+```sh
+python ./demo/run_demo.py --quantize 4 --chatglm-cpp
+```
+
+Fast API 同样支持 ChatGLM.cpp 加速，添加同样参数启动服务：
+```sh
+python ./demo/fastapicpu.py --quantize 4 --chatglm-cpp
+```
+
+测试服务接口：
+```sh
+curl -X POST "http://127.0.0.1:7860" \
+    -H 'Content-Type: application/json' \
+    -d '{"lang": "Python", "prompt": "# Write a bubble sort function", "max_length": 512}'
+```
