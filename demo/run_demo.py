@@ -23,6 +23,14 @@ except:
     print("Multiple GPUs support disabled.")
     enable_multiple_gpus = False
 
+try:
+    import chatglm_cpp
+    enable_chatglm_cpp = True
+except:
+    print("[WARN] chatglm-cpp not found. Install it by `pip install chatglm-cpp` for better performance. "
+          "Check out https://github.com/li-plus/chatglm.cpp for more details.")
+    enable_chatglm_cpp = False
+
 
 def get_model(args):
     if not args.cpu:
@@ -42,6 +50,12 @@ def get_model(args):
         print(f"Runing on {args.n_gpus} GPUs.")
         model = load_model_on_gpus(args.model_path, num_gpus=args.n_gpus)
         model = model.eval()
+    elif enable_chatglm_cpp and args.chatglm_cpp:
+        print("Using chatglm-cpp to improve performance")
+        dtype = "f16"
+        if args.quantize in [4, 5, 8]:
+            dtype = f"q{args.quantize}_0"
+        model = chatglm_cpp.Pipeline(args.model_path, dtype=dtype)
     else:
         model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True)
         model = model.eval()
@@ -55,7 +69,7 @@ def get_model(args):
             else:
                 model = llm.from_hf(model, dtype="float16")
         else:
-            print("fastllm not installed, using transformers.")
+            print("chatglm-cpp and fastllm not installed, using transformers.")
             if args.quantize in [4, 8]:
                 print(f"Model is quantized to INT{args.quantize} format.")
                 model = model.half().quantize(args.quantize)
@@ -80,6 +94,10 @@ def add_code_generation_args(parser):
         "--quantize",
         type=int,
         default=None,
+    )
+    group.add_argument(
+        "--chatglm-cpp",
+        action="store_true",
     )
     group.add_argument(
         "--fastllm",
@@ -248,6 +266,16 @@ def main():
                                  top_k=top_k,
                                  temperature=temperature)
             response = prompt + outputs[0]
+        elif enable_chatglm_cpp and args.chatglm_cpp:
+            inputs = tokenizer([prompt], return_tensors="pt")
+            pipeline = model
+            outputs = pipeline.generate(prompt,
+                                        max_length=inputs['input_ids'].shape[-1] + out_seq_length,
+                                        do_sample=temperature > 0,
+                                        top_p=top_p,
+                                        top_k=top_k,
+                                        temperature=temperature)
+            response = prompt + outputs
         else:
             inputs = tokenizer([prompt], return_tensors="pt")
             inputs = inputs.to(model.device)

@@ -3,6 +3,16 @@ from transformers import AutoTokenizer, AutoModel
 import uvicorn, json, datetime
 import torch
 import argparse
+
+try:
+    import chatglm_cpp
+    enable_chatglm_cpp = True
+except:
+    print("[WARN] chatglm-cpp not found. Install it by `pip install chatglm-cpp` for better performance. "
+          "Check out https://github.com/li-plus/chatglm.cpp for more details.")
+    enable_chatglm_cpp = False
+
+
 #获取选项        
 def add_code_generation_args(parser):
     group = parser.add_argument_group(title="CodeGeeX2 DEMO")
@@ -32,6 +42,15 @@ def add_code_generation_args(parser):
     )
     group.add_argument(                      
         "--half",
+        action="store_true",
+    )
+    group.add_argument(
+        "--quantize",
+        type=int,
+        default=None,
+    )
+    group.add_argument(
+        "--chatglm-cpp",
         action="store_true",
     )
     return parser
@@ -108,37 +127,56 @@ LANGUAGE_TAG = {
 
 app = FastAPI()
 def device():
+    if enable_chatglm_cpp and args.chatglm_cpp:
+        print("Using chatglm-cpp to improve performance")
+        dtype = "f16" if args.half else "f32"
+        if args.quantize in [4, 5, 8]:
+            dtype = f"q{args.quantize}_0"
+        model = chatglm_cpp.Pipeline(args.model_path, dtype=dtype)
+        return model
+
+    print("chatglm-cpp not enabled, falling back to transformers")
     if not args.cpu:
         if not args.half:
             model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True).cuda()
         else:
             model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True).cuda().half()
+        if args.quantize in [4, 8]:
+            print(f"Model is quantized to INT{args.quantize} format.")
+            model = model.half().quantize(args.quantize)
     else:
         model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True)
 
-    return model
+    return model.eval()
 
 @app.post("/")
 async def create_item(request: Request):
     global model, tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(args.model_path, trust_remote_code=True)
     json_post_raw = await request.json()
     json_post = json.dumps(json_post_raw)
     json_post_list = json.loads(json_post)
     lang = json_post_list.get('lang')
     prompt = json_post_list.get('prompt')
-    max_length = json_post_list.get('max_length')
-    top_p = json_post_list.get('top_p')
-    temperature = json_post_list.get('temperature')
-    top_k = json_post_list.get('top_k')
+    max_length = json_post_list.get('max_length', 128)
+    top_p = json_post_list.get('top_p', 0.95)
+    temperature = json_post_list.get('temperature', 0.2)
+    top_k = json_post_list.get('top_k', 0)
     if lang != "None":
         prompt = LANGUAGE_TAG[lang] + "\n" + prompt
-    response = model.chat(tokenizer,
-                          prompt,
-                          max_length=max_length if max_length else 128,
-                          top_p=top_p if top_p else 0.95,
-                          top_k=top_k if top_k else 0,
-                          temperature=temperature if temperature else 0.2)
+    if enable_chatglm_cpp and args.chatglm_cpp:
+        response = model.generate(prompt,
+                                  max_length=max_length,
+                                  do_sample=temperature > 0,
+                                  top_p=top_p,
+                                  top_k=top_k,
+                                  temperature=temperature)
+    else:
+        response = model.chat(tokenizer,
+                              prompt,
+                              max_length=max_length,
+                              top_p=top_p,
+                              top_k=top_k,
+                              temperature=temperature)
     now = datetime.datetime.now()
     time = now.strftime("%Y-%m-%d %H:%M:%S")
     answer = {
@@ -157,6 +195,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser = add_code_generation_args(parser)
     args, _ = parser.parse_known_args()
+    tokenizer = AutoTokenizer.from_pretrained(args.model_path, trust_remote_code=True)
     model = device()
-    model.eval()
     uvicorn.run(app, host=args.listen, port=args.port, workers=args.workers)
