@@ -28,7 +28,7 @@ CodeGeeX2 est la deuxième itération du modèle de génération de code multili
 
 Nous avons développé une extension pour VS Code, IntelliJ IDEA, PyCharm, GoLand, WebStorm, and Android Studio. L'extension permet de profiter des capacités du modèle CodeGeeX2 et de générer, annoter et traduire du code. La fonctionnalité "Ask CodeGeeX" permet de coder de manière interactive et améliore grandement votre productivité. Téléchargez l'extension CodeGeeX dans votre IDE pour une meilleure expérience de développement. Trouvez plus de détail sur notre [site]( https://codegeex.cn/).
 
-## Utilisation
+## Utilisation  (Python3)
 
 Pour exécuter [CodeGeeX2-6B](https://huggingface.co/THUDM/codegeex2-6b), utilisez la librairie `transformers`：
 
