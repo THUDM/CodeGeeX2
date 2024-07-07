@@ -8,6 +8,9 @@ Read this in [English](README_EN.md)<br>
 [日本語](README_JA.md)で読む<br>
 Lire en [Français](README_FR.md)
 
+⭐️ 最新一代 [CodeGeeX4](https://github.com/THUDM/CodeGeeX4) 模型已经正式开源。
+The newest [CodeGeeX4](https://github.com/THUDM/CodeGeeX4) has been released.
+
 # CodeGeeX2: 更强大的多语言代码生成模型
 
 CodeGeeX2 是多语言代码生成模型 [CodeGeeX](https://github.com/THUDM/CodeGeeX) ([KDD’23](https://arxiv.org/abs/2303.17568)) 的第二代模型。不同于一代 CodeGeeX（完全在国产华为昇腾芯片平台训练） ，CodeGeeX2 是基于 [ChatGLM2](https://github.com/THUDM/ChatGLM2-6B) 架构加入代码预训练实现，得益于 ChatGLM2 的更优性能，CodeGeeX2 在多项指标上取得性能提升（+107% > CodeGeeX；仅60亿参数即超过150亿参数的 StarCoder-15B 近10%），更多特性包括：
