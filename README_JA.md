@@ -28,7 +28,7 @@ CodeGeeX2 は、多言語コード生成モデル [CodeGeeX](https://github.com/
 
 VS Code、IntelliJ IDEA、PyCharm、GoLand、WebStorm、Android Studio などの IDE をサポートする CodeGeeX プラグインを開発しました。このプラグインを使用することで、CodeGeeX2 モデルのコード生成と補完、アノテーション、コード変換、"Ask CodeGeeX" 対話型プログラミングなどの機能を体験することができ、開発効率を向上させることができます。より包括的な AI コーディング体験を得るために、IDE に CodeGeeX プラグインをダウンロードしてください。詳しくは[ホームページ](https://codegeex.cn/)をご覧ください。
 
-## 始める
+## 始める (Python3)
 
 [CodeGeeX2-6B](https://huggingface.co/THUDM/codegeex2-6b) を素早く起動するには、`transformers` を使用します：
 

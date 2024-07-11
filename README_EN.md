@@ -28,7 +28,7 @@ CodeGeeX2 is the second-generation model of the multilingual code generation mod
 
 We have developed the CodeGeeX plugin, which supports IDEs such as VS Code, IntelliJ IDEA, PyCharm, GoLand, WebStorm, and Android Studio. The plugin allows you to experience the CodeGeeX2 model's capabilities in code generation and completion, annotation, code translation, and "Ask CodeGeeX" interactive programming, which can help improve your development efficiency. Please download the CodeGeeX plugin in your IDE to get a more comprehensive AI coding experience. You can find more details on our [homepage]( https://codegeex.cn/).
 
-## Get Started
+## Get Started (Python3)
 
 Use `transformers` to quickly launch [CodeGeeX2-6B](https://huggingface.co/THUDM/codegeex2-6b)：
 

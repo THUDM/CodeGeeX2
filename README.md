@@ -32,7 +32,7 @@ CodeGeeX2 是多语言代码生成模型 [CodeGeeX](https://github.com/THUDM/Cod
 我们开发了支持 VS Code、 IntelliJ IDEA、PyCharm、GoLand、WebStorm、Android Studio 等IDE的 CodeGeeX 插件。在插件中，可以更直接地体验到 CodeGeeX2 模型在代码生成与补全、添加注释、代码翻译及技术问答方面的能力为开发效率带来的提升。欢迎在IDE中下载 CodeGeeX 插件获得更加全面的AI编程体验，详情见[CodeGeeX主页](https://codegeex.cn/)。
 
 
-## 快速开始
+## 快速开始 (Python3)
 
 ### 使用`transformers`快速调用[CodeGeeX2-6B](https://huggingface.co/THUDM/codegeex2-6b)：
 
