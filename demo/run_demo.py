@@ -7,6 +7,8 @@ import argparse
 import gradio as gr
 
 from transformers import AutoTokenizer, AutoModel
+# Fix the issue RuntimeError: CUDA error: device-side assert triggered during run this demo py file
+CUDA_LAUNCH_BLOCKING="1"
 
 try:
     # Should first install fastllm (https://github.com/ztxz16/fastllm.git)
