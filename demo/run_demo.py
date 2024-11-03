@@ -219,7 +219,7 @@ LANGUAGE_TAG = {
 
 
 def set_random_seed(seed):
-    """Set random seed for reproducability."""
+    """Set random seed for reproducibility."""
     random.seed(seed)
     numpy.random.seed(seed)
     torch.manual_seed(seed)
@@ -312,8 +312,8 @@ def main():
             * 按照所选编程语言的格式写注释可以获得更好的结果，请参照下方给出的示例。
 
             This is the DEMO for CodeGeeX2. Please note that:
-            * CodeGeeX2 is a base model, which is not instruction-tuned for chatting. It can do tasks like code completion/translation/explaination. To try the instruction-tuned version in CodeGeeX plugins ([VS Code](https://marketplace.visualstudio.com/items?itemName=aminer.codegeex), [Jetbrains](https://plugins.jetbrains.com/plugin/20587-codegeex)).
-            * Programming languages can be controled by adding `language tag`, e.g., `# language: Python`. The format should be respected to ensure performance, full list can be found [here](https://github.com/THUDM/CodeGeeX2/blob/main/evaluation/utils.py#L14).
+            * CodeGeeX2 is a base model, which is not instruction-tuned for chatting. It can do tasks like code completion/translation/explanation. To try the instruction-tuned version in CodeGeeX plugins ([VS Code](https://marketplace.visualstudio.com/items?itemName=aminer.codegeex), [Jetbrains](https://plugins.jetbrains.com/plugin/20587-codegeex)).
+            * Programming languages can be controlled by adding `language tag`, e.g., `# language: Python`. The format should be respected to ensure performance, full list can be found [here](https://github.com/THUDM/CodeGeeX2/blob/main/evaluation/utils.py#L14).
             * Write comments under the format of the selected programming language to achieve better results, see examples below.
             """)
 
@@ -348,7 +348,7 @@ def main():
         clr.click(fn=lambda value: gr.update(value=""), inputs=clr, outputs=prompt)
 
         gr_examples = gr.Examples(examples=examples, inputs=[prompt, lang],
-                                  label="Example Inputs (Click to insert an examplet it into the input box)",
+                                  label="Example Inputs (Click to insert an example into the input box)",
                                   examples_per_page=20)
     if not args.auth:
         demo.launch(server_name=args.listen, server_port=args.port)
